@@ -19,6 +19,9 @@ public class ViewPagerTransformer implements ViewPager.PageTransformer {
                 // Swipe left
                 page.setScaleX(1f);
                 page.setScaleY(1f);
+                page.setPivotX(page.getWidth() * 0.5f);
+                page.setPivotY(page.getHeight() * 0.5f);
+                page.setTranslationX(-page.getWidth() * position * 0.25f);
             } else if (position > 0) {
                 // Swipe right
                 float scale = Math.abs(1f - position);
