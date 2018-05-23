@@ -1,10 +1,13 @@
 package com.emwno.fq;
 
+import android.animation.ArgbEvaluator;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.emwno.fq.network.FQFactory;
@@ -20,18 +23,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
     private LinearLayout mQuote;
+    private ImageView mQuoteIcon;
     private FQService mService;
+    private ArgbEvaluator mEvaluator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mQuote = findViewById(R.id.quoteText);
         mPager = findViewById(R.id.viewPager);
+        mQuote = findViewById(R.id.quoteText);
+        mQuoteIcon = findViewById(R.id.imageView);
 
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mService = FQFactory.getRetrofitInstance().create(FQService.class);
+        mEvaluator = new ArgbEvaluator();
 
         mPager.setPageTransformer(true, new ViewPagerTransformer());
         mPager.addOnPageChangeListener(this);
@@ -75,8 +82,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             mQuote.setScaleY(positionOffset);
             mQuote.setPivotX(mPager.getWidth() * 0.5f);
             mQuote.setPivotY(mPager.getHeight() * 0.5f);
+
             float deltaWidth = mPager.getWidth() - positionOffset * mPager.getWidth();
             mQuote.setTranslationX((-mPager.getWidth() * position + deltaWidth) * 0.75f);
+
+            // Integers = hex colors as integers = dark | light
+            int color = (int) mEvaluator.evaluate(positionOffset, -15198184, -460552);
+            mQuote.setAlpha(positionOffset);
+            mQuoteIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
 
