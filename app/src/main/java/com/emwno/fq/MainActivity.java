@@ -3,14 +3,24 @@ package com.emwno.fq;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.emwno.fq.network.FQFactory;
+import com.emwno.fq.network.FQService;
+import com.emwno.fq.network.Fuck;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
     private LinearLayout mQuote;
+    private FQService mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +31,27 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mPager = findViewById(R.id.viewPager);
 
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mService = FQFactory.getRetrofitInstance().create(FQService.class);
 
         mPager.setPageTransformer(true, new ViewPagerTransformer());
         mPager.addOnPageChangeListener(this);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(1);
+
+        Call<Fuck> call = mService.getFuck("awesome", "me");
+        Log.e("king", call.request().url().toString());
+
+        call.enqueue(new Callback<Fuck>() {
+            @Override
+            public void onResponse(Call<Fuck> call, Response<Fuck> response) {
+                Log.e("king", response.body().getMessage() + " " + response.body().getSubtitle());
+            }
+
+            @Override
+            public void onFailure(Call<Fuck> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
