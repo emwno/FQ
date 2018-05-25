@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mService = FQFactory.getRetrofitInstance().create(FQService.class);
         mEvaluator = new ArgbEvaluator();
 
-        mPager.setPageTransformer(true, new ViewPagerTransformer());
         mPager.addOnPageChangeListener(this);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(1);
@@ -70,11 +69,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         if (position == 0) {
-            mQuote.setScaleX(positionOffset);
-            mQuote.setScaleY(positionOffset);
-            mQuote.setPivotX(mPager.getWidth() * 0.5f);
-            mQuote.setPivotY(mPager.getHeight() * 0.5f);
-
             float deltaWidth = mPager.getWidth() - positionOffset * mPager.getWidth();
             mQuote.setTranslationX((-mPager.getWidth() * position + deltaWidth) * 0.75f);
 
