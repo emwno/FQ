@@ -1,5 +1,7 @@
 package com.emwno.fq.network;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -9,9 +11,10 @@ import retrofit2.http.Path;
  */
 public interface FQService {
 
-    @GET("{fuck}/{from}")
-    Call<Fuck> getFuck(@Path("fuck") String fuckToGet, @Path("from") String from);
+    @GET("{url}")
+    Call<FQ> getFuck(@Path(value = "url", encoded = true) String url);
 
-    @GET("{fuck}/{to}/{from}")
-    Call<Fuck> getFuck(@Path("fuck") String fuckToGet, @Path("to") String to, @Path("from") String from);
+    @GET("operations")
+    Call<List<Fuck>> getOperations();
+
 }

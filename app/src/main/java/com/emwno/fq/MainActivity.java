@@ -9,20 +9,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.emwno.fq.network.FQ;
 import com.emwno.fq.network.FQFactory;
 import com.emwno.fq.network.FQService;
+import com.emwno.fq.network.Field;
 import com.emwno.fq.network.Fuck;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, FuckFragment.OnFuckSelectedListener {
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
     private LinearLayout mQuote;
+    private TextView mQuoteTitle;
+    private TextView mQuoteSubtitle;
     private ImageView mQuoteIcon;
     private FQService mService;
     private ArgbEvaluator mEvaluator;
@@ -33,7 +38,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         setContentView(R.layout.activity_main);
 
         mPager = findViewById(R.id.viewPager);
-        mQuote = findViewById(R.id.quoteText);
+        mQuote = findViewById(R.id.fqLayout);
+        mQuoteTitle = findViewById(R.id.fqTitle);
+        mQuoteSubtitle = findViewById(R.id.fqSubtitle);
         mQuoteIcon = findViewById(R.id.imageView);
 
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -44,21 +51,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mPager.addOnPageChangeListener(this);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(1);
-
-        Call<Fuck> call = mService.getFuck("awesome", "me");
-        Log.e("king", call.request().url().toString());
-
-        call.enqueue(new Callback<Fuck>() {
-            @Override
-            public void onResponse(Call<Fuck> call, Response<Fuck> response) {
-                Log.e("king", response.body().getMessage() + " " + response.body().getSubtitle());
-            }
-
-            @Override
-            public void onFailure(Call<Fuck> call, Throwable t) {
-
-            }
-        });
     }
 
     @Override
@@ -102,4 +94,48 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public void onPageScrollStateChanged(int state) {
 
     }
+
+    @Override
+    public void onFuckSelected(Fuck fuck) {
+        for (int i = 0; i < fuck.getFields().size(); i++) {
+            Field field = fuck.getFields().get(i);
+            fuck.getFields().get(i).setData("~" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "|");
+        }
+        fetchFQ(fuck);
+        mPager.setCurrentItem(1);
+    }
+
+    private void fetchFQ(Fuck fuck) {
+        String url = fuck.getUrl();
+
+        for (Field field : fuck.getFields()) {
+            url = url.replace(":" + field.getField(), field.getData());
+        }
+
+        Call<FQ> call = mService.getFuck(url);
+        Log.e("king", call.request().url().toString());
+
+        call.enqueue(new Callback<FQ>() {
+            @Override
+            public void onResponse(Call<FQ> call, Response<FQ> response) {
+
+                String title = response.body().getMessage();
+                title = title.replaceAll("~", " <u>");
+                title = title.replaceAll("\\|", "</u>");
+
+                String subtitle = response.body().getSubtitle();
+                subtitle = subtitle.replaceAll("~", "<u>");
+                subtitle = subtitle.replaceAll("\\|", "</u>");
+
+                mQuoteTitle.setText(Util.fromHtml(title));
+                mQuoteSubtitle.setText(Util.fromHtml(subtitle));
+            }
+
+            @Override
+            public void onFailure(Call<FQ> call, Throwable t) {
+
+            }
+        });
+    }
+
 }
