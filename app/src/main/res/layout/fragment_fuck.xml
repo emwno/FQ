@@ -3,6 +3,7 @@
     android:id="@+id/fragment_fuck"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:elevation="10dp"
     android:onClick="toggleFucks">
 
     <android.support.v7.widget.RecyclerView
