@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mPager.addOnPageChangeListener(this);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(1);
+        mPager.setOffscreenPageLimit(2);
 
         GestureDetector detector = new GestureDetector(this, new SwipeUpListener() {
             @Override
