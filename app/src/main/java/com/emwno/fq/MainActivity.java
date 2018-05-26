@@ -1,14 +1,16 @@
 package com.emwno.fq;
 
 import android.animation.ArgbEvaluator;
+import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.emwno.fq.network.FQ;
@@ -25,24 +27,29 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
-    private LinearLayout mQuote;
+    private RelativeLayout mQuoteLayout;
+    private FQBottomSheetFragment mBottomSheet;
+    private View mBottomSheetSwipeView;
     private TextView mQuoteTitle;
     private TextView mQuoteSubtitle;
     private ImageView mQuoteIcon;
     private FQService mService;
     private ArgbEvaluator mEvaluator;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mPager = findViewById(R.id.viewPager);
-        mQuote = findViewById(R.id.fqLayout);
+        mQuoteLayout = findViewById(R.id.fqLayout);
+        mBottomSheetSwipeView = findViewById(R.id.fqSwipeView);
         mQuoteTitle = findViewById(R.id.fqTitle);
         mQuoteSubtitle = findViewById(R.id.fqSubtitle);
         mQuoteIcon = findViewById(R.id.imageView);
 
+        mBottomSheet = new FQBottomSheetFragment();
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mService = FQFactory.getRetrofitInstance().create(FQService.class);
         mEvaluator = new ArgbEvaluator();
@@ -50,6 +57,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mPager.addOnPageChangeListener(this);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(1);
+
+        GestureDetector detector = new GestureDetector(this, new SwipeUpListener() {
+            @Override
+            public void onSwipeUp() {
+                mBottomSheet.show(getSupportFragmentManager(), "BottomSheetFragment");
+            }
+        });
+
+        mBottomSheetSwipeView.setOnTouchListener((v, event) -> !detector.onTouchEvent(event));
     }
 
     @Override
@@ -70,11 +86,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         if (position == 0) {
             float deltaWidth = mPager.getWidth() - positionOffset * mPager.getWidth();
-            mQuote.setTranslationX((-mPager.getWidth() * position + deltaWidth) * 0.75f);
+            mQuoteLayout.setTranslationX((-mPager.getWidth() * position + deltaWidth) * 0.75f);
 
             // Integers = hex colors as integers = dark | light
             int color = (int) mEvaluator.evaluate(positionOffset, -15198184, -460552);
-            mQuote.setAlpha(positionOffset);
+            mQuoteLayout.setAlpha(positionOffset);
             mQuoteIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
     }
