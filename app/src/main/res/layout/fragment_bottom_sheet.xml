@@ -1,19 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="wrap_content"
     android:background="@color/light"
     android:orientation="vertical"
     android:padding="16dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <TextView
+        android:id="@+id/text0"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:gravity="center"
-        android:text="Hi!"
+        android:layout_height="wrap_content"
         android:textColor="@color/dark" />
 
-</LinearLayout>
+    <EditText
+        android:id="@+id/editText0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:textColor="@color/dark"
+        app:layout_constraintTop_toBottomOf="@id/text0" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/editText0" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:textColor="@color/dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/text1" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/editText1" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:textColor="@color/dark"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/text2" />
+
+</android.support.constraint.ConstraintLayout>

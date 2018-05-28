@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.emwno.fq.network.FQ;
 import com.emwno.fq.network.FQFactory;
@@ -19,22 +20,29 @@ import com.emwno.fq.network.FQService;
 import com.emwno.fq.network.Field;
 import com.emwno.fq.network.Fuck;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, FuckFragment.OnFuckSelectedListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
+        FuckFragment.OnFuckSelectedListener, FQBottomSheetFragment.OnBlanksFilledListener {
+
+    private Fuck mFuck;
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
     private RelativeLayout mQuoteLayout;
     private FQBottomSheetFragment mBottomSheet;
+
     private View mBottomSheetSwipeView;
     private TextView mQuoteTitle;
     private TextView mQuoteSubtitle;
     private ImageView mQuoteIcon;
     private FQService mService;
     private ArgbEvaluator mEvaluator;
+    private GestureDetector mGestureDetector;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,24 +57,23 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mQuoteSubtitle = findViewById(R.id.fqSubtitle);
         mQuoteIcon = findViewById(R.id.imageView);
 
-        mBottomSheet = new FQBottomSheetFragment();
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mService = FQFactory.getRetrofitInstance().create(FQService.class);
         mEvaluator = new ArgbEvaluator();
+        mGestureDetector = new GestureDetector(this, new SwipeUpListener() {
+            @Override
+            public void onSwipeUp() {
+                if (mBottomSheet != null)
+                    mBottomSheet.show(getSupportFragmentManager(), "BottomSheetFragment");
+            }
+        });
 
         mPager.addOnPageChangeListener(this);
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(1);
         mPager.setOffscreenPageLimit(2);
 
-        GestureDetector detector = new GestureDetector(this, new SwipeUpListener() {
-            @Override
-            public void onSwipeUp() {
-                mBottomSheet.show(getSupportFragmentManager(), "BottomSheetFragment");
-            }
-        });
-
-        mBottomSheetSwipeView.setOnTouchListener((v, event) -> !detector.onTouchEvent(event));
+        mBottomSheetSwipeView.setOnTouchListener((v, event) -> !mGestureDetector.onTouchEvent(event));
     }
 
     @Override
@@ -112,6 +119,19 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             Field field = fuck.getFields().get(i);
             fuck.getFields().get(i).setData("~" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "|");
         }
+
+        if (mBottomSheet != null) {
+            getSupportFragmentManager().beginTransaction().remove(mBottomSheet).commit();
+            mBottomSheet = null;
+        }
+
+        mFuck = fuck;
+        mBottomSheet = new FQBottomSheetFragment();
+
+        Bundle b = new Bundle();
+        b.putParcelable("fuck", fuck);
+        mBottomSheet.setArguments(b);
+
         fetchFQ(fuck);
         mPager.setCurrentItem(1);
     }
@@ -149,4 +169,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         });
     }
 
+    @Override
+    public void onBlanksFilled(List<String> fuckBlanks) {
+        for (int i = 0; i < mFuck.getFields().size(); i++) {
+            String blank = fuckBlanks.get(i);
+
+            if (blank.contains("/")) {
+                Toast.makeText(this, "Hey! Do you want to fuck up the app?\nBlanks can't contain a '/'", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (!blank.isEmpty())
+                mFuck.getFields().get(i).setData(fuckBlanks.get(i));
+            else
+                mFuck.getFields().get(i).setData("~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|");
+        }
+
+        fetchFQ(mFuck);
+    }
 }
