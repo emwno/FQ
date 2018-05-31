@@ -17,7 +17,7 @@ import io.fotoapparat.view.CameraView;
  */
 public class CameraFragment extends Fragment {
 
-    Fotoapparat mCamera;
+    private Fotoapparat mCamera;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
