@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         FuckFragment.OnFuckSelectedListener, FQBottomSheetFragment.OnBlanksFilledListener {
 
     private Fuck mFuck;
+    private float mStatusBarHeight;
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
@@ -50,6 +52,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         mPager = findViewById(R.id.viewPager);
         mQuoteLayout = findViewById(R.id.fqLayout);
         mBottomSheetSwipeView = findViewById(R.id.fqSwipeView);
@@ -60,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mService = FQFactory.getRetrofitInstance().create(FQService.class);
         mEvaluator = new ArgbEvaluator();
+
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        mStatusBarHeight = getResources().getDimension(resourceId);
+
         mGestureDetector = new GestureDetector(this, new SwipeUpListener() {
             @Override
             public void onSwipeUp() {
@@ -100,12 +110,18 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             int color = (int) mEvaluator.evaluate(positionOffset, -15198184, -460552);
             mQuoteLayout.setAlpha(positionOffset);
             mQuoteIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        } else if (position == 1) {
+            mQuoteIcon.setTranslationY(-mStatusBarHeight * positionOffset);
         }
     }
 
     @Override
     public void onPageSelected(int position) {
-
+        if (position == 2) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fuckList"
+        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:requiresFadingEdge="vertical" />
