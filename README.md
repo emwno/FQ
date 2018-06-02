@@ -11,8 +11,6 @@ This app was built to rid the common man/woman/apache-helicopter/fluid-gender of
 - IU (Indiana University)
 - (many fucking more)
 
-<br>
-
 #### How it works
 This uses [foaas](foaas.com) as a backend to fetch the templates and generate a unique fuck quote (FQ) based on the users input.
 
