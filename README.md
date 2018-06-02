@@ -12,10 +12,11 @@ This app was built to rid the common man/woman/apache-helicopter/fluid-gender of
 - (many fucking more)
 
 <br>
-##### How it works
+
+#### How it works
 This uses [foaas](foaas.com) as a backend to fetch the templates and generate a unique fuck quote (FQ) based on the users input.
 
-##### How to use it
+#### How to use it
 1. Choose a Fuck
 2. Fill-in the blank(s)
 3. Take a picture
