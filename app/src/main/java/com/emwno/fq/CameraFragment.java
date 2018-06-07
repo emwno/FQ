@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +23,8 @@ import io.fotoapparat.view.CameraView;
 public class CameraFragment extends Fragment implements GestureListener {
 
     private int mLensPosition = 0;
+    private float mZoomLevel = 0;
+    private float mTouchStartPointY = -1;
 
     private Fotoapparat mCamera;
 
@@ -52,6 +55,37 @@ public class CameraFragment extends Fragment implements GestureListener {
             mLensPosition--;
         }
         return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        if (mTouchStartPointY == -1) {
+            mTouchStartPointY = e1.getRawY();
+        }
+
+        if (mTouchStartPointY - e2.getRawY() > 10) {
+            zoom(0, Math.abs(distanceY) / 400);
+        } else if (e2.getRawY() - mTouchStartPointY > 10) {
+            zoom(1, Math.abs(distanceY) / 400);
+        }
+
+        mTouchStartPointY = e2.getRawY();
+
+        return true;
+    }
+
+    public void zoom(int direction, float scale) {
+        if (direction == 0) {
+            mZoomLevel += scale;
+            if (mZoomLevel > 1) mZoomLevel = 1;
+            Log.e("king", "up  " + mZoomLevel);
+            mCamera.setZoom(mZoomLevel);
+        } else {
+            mZoomLevel -= scale;
+            if (mZoomLevel < 0) mZoomLevel = 0;
+            Log.e("king", "down  " + mZoomLevel);
+            mCamera.setZoom(mZoomLevel);
+        }
     }
 
     @Override
