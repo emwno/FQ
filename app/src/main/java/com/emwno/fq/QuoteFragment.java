@@ -55,8 +55,16 @@ public class QuoteFragment extends Fragment implements GestureListener {
         return true;
     }
 
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        mListener.onAdjustFQStyle();
+        return true;
+    }
+
     public interface OnAdjustFQListener {
         void onAdjustFQSize(int direction, float scale);
+
+        void onAdjustFQStyle();
     }
 
 }

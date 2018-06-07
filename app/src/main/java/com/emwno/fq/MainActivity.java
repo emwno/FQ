@@ -3,6 +3,7 @@ package com.emwno.fq;
 import android.animation.ArgbEvaluator;
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private Fuck mFuck;
     private float mStatusBarHeight;
+    private int mQuoteStyle = 0;
     private float currentSize = 25f;
 
     private ViewPager mPager;
@@ -231,6 +233,20 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         }
 
         mQuoteTitle.setTextSize(currentSize);
+    }
+
+    @Override
+    public void onAdjustFQStyle() {
+        if (mQuoteStyle == 3) {
+            mQuoteStyle = 0;
+            mQuoteTitle.setTypeface(Typeface.DEFAULT, mQuoteStyle);
+            mQuoteSubtitle.setTypeface(Typeface.DEFAULT, mQuoteStyle);
+        } else {
+            mQuoteStyle++;
+            mQuoteTitle.setTypeface(Typeface.DEFAULT, mQuoteStyle);
+            mQuoteSubtitle.setTypeface(Typeface.DEFAULT, mQuoteStyle);
+
+        }
     }
 
 }
