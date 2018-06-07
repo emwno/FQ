@@ -19,25 +19,11 @@ import io.fotoapparat.view.CameraView;
 /**
  * Created on 22 May 2018.
  */
-public class CameraFragment extends Fragment {
+public class CameraFragment extends Fragment implements GestureListener {
 
-    private Fotoapparat mCamera;
     private int mLensPosition = 0;
 
-    GestureDetector gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            if (mLensPosition == 0) {
-                mCamera.switchTo(LensPositionSelectorsKt.front(), CameraConfiguration.standard());
-                mLensPosition++;
-            } else {
-                mCamera.switchTo(LensPositionSelectorsKt.back(), CameraConfiguration.standard());
-                mLensPosition--;
-            }
-            return true;
-        }
-    });
+    private Fotoapparat mCamera;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -50,9 +36,22 @@ public class CameraFragment extends Fragment {
                 .photoResolution(ResolutionSelectorsKt.highestResolution())
                 .into(cameraView).build();
 
-        cameraView.setOnTouchListener((v, event) -> !gestureDetector.onTouchEvent(event));
+        GestureDetector gestureDetector = new GestureDetector(getContext(), this);
+        rootView.setOnTouchListener((v, event) -> !gestureDetector.onTouchEvent(event));
 
         return rootView;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        if (mLensPosition == 0) {
+            mCamera.switchTo(LensPositionSelectorsKt.front(), CameraConfiguration.standard());
+            mLensPosition++;
+        } else {
+            mCamera.switchTo(LensPositionSelectorsKt.back(), CameraConfiguration.standard());
+            mLensPosition--;
+        }
+        return true;
     }
 
     @Override
