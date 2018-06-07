@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -28,7 +29,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
-        FuckFragment.OnFuckSelectedListener, FQBottomSheetFragment.OnBlanksFilledListener {
+        FuckFragment.OnFuckSelectedListener, FQBottomSheetFragment.OnBlanksFilledListener,
+        GestureListener {
 
     private Fuck mFuck;
     private float mStatusBarHeight;
@@ -70,13 +72,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         mStatusBarHeight = getResources().getDimension(resourceId);
 
-        mGestureDetector = new GestureDetector(this, new SwipeUpListener() {
-            @Override
-            public void onSwipeUp() {
-                if (mBottomSheet != null)
-                    mBottomSheet.show(getSupportFragmentManager(), "BottomSheetFragment");
-            }
-        });
+        mGestureDetector = new GestureDetector(this, this);
 
         mPager.addOnPageChangeListener(this);
         mPager.setAdapter(mAdapter);
@@ -127,6 +123,20 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        float yDiff = Math.abs(e1.getY() - e2.getY());
+
+        if (Math.abs(velocityY) > 0 && yDiff > 100) {
+            if (e1.getY() > e2.getY()) {
+                if (mBottomSheet != null)
+                    mBottomSheet.show(getSupportFragmentManager(), "BottomSheetFragment");
+            }
+        }
+
+        return true;
     }
 
     @Override
