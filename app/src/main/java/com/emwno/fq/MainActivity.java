@@ -30,10 +30,11 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
         FuckFragment.OnFuckSelectedListener, FQBottomSheetFragment.OnBlanksFilledListener,
-        GestureListener {
+        QuoteFragment.OnAdjustFQListener, GestureListener {
 
     private Fuck mFuck;
     private float mStatusBarHeight;
+    private float currentSize = 25f;
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
@@ -213,4 +214,23 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         fetchFQ(mFuck);
     }
+
+    @Override
+    public void onAdjustFQSize(int direction, float scale) {
+//        float currentSize = mQuoteTitle.getTextSize();
+        if (direction == 0) {
+            currentSize += 1 + scale;
+        } else {
+            currentSize -= 1 + scale;
+        }
+
+        if (currentSize > 150) {
+            currentSize = 150;
+        } else if (currentSize < 25) {
+            currentSize = 25;
+        }
+
+        mQuoteTitle.setTextSize(currentSize);
+    }
+
 }
