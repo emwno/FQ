@@ -2,6 +2,7 @@ package com.emwno.fq;
 
 import android.animation.ArgbEvaluator;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
         FuckFragment.OnFuckSelectedListener, FQBottomSheetFragment.OnBlanksFilledListener,
-        QuoteFragment.OnAdjustFQListener, GestureListener {
+        QuoteFragment.OnAdjustFQListener, GestureListener, CameraFragment.onCapturePictureListener {
 
     private Fuck mFuck;
     private float mStatusBarHeight;
@@ -242,8 +243,17 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             mQuoteStyle++;
             mQuoteTitle.setTypeface(Typeface.DEFAULT, mQuoteStyle);
             mQuoteSubtitle.setTypeface(Typeface.DEFAULT, mQuoteStyle);
-
         }
     }
 
+    @Override
+    public void onCapturePicture(byte[] picture) {
+        Intent intent = new Intent(getBaseContext(), PreviewActivity.class);
+        intent.putExtra("image", picture);
+        intent.putExtra("fqTitle", mQuoteTitle.getText().toString());
+        intent.putExtra("fqSubTitle", mQuoteSubtitle.getText().toString());
+        intent.putExtra("textSize", currentSize);
+        intent.putExtra("textStyle", mQuoteStyle);
+        startActivity(intent);
+    }
 }

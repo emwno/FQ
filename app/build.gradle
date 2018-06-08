@@ -26,6 +26,9 @@ repositories {
 }
 
 dependencies {
+    implementation ("com.github.bumptech.glide:glide:4.7.1") {
+        exclude group: "com.android.support"
+    }
     implementation "com.android.support:exifinterface:27.1.1"
     implementation 'com.otaliastudios:cameraview:1.5.1'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'

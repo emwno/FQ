@@ -1,6 +1,7 @@
 package com.emwno.fq;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
 
@@ -24,6 +26,14 @@ public class CameraFragment extends Fragment implements GestureListener {
 
     private CameraView mCameraView;
 
+    private onCapturePictureListener mListener;
+
+    @Override
+    public void onAttach(Context activity) {
+        mListener = (onCapturePictureListener) activity;
+        super.onAttach(activity);
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,7 +44,21 @@ public class CameraFragment extends Fragment implements GestureListener {
         GestureDetector gestureDetector = new GestureDetector(getContext(), this);
         mCameraView.setOnTouchListener((v, event) -> !gestureDetector.onTouchEvent(event));
 
+        // For testing
+        mCameraView.addCameraListener(new CameraListener() {
+            @Override
+            public void onPictureTaken(byte[] picture) {
+                mListener.onCapturePicture(picture);
+            }
+        });
+
         return rootView;
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+        mCameraView.captureSnapshot();
+        return true;
     }
 
     @Override
@@ -88,6 +112,11 @@ public class CameraFragment extends Fragment implements GestureListener {
     public void onStop() {
         super.onStop();
         mCameraView.stop();
+    }
+
+
+    public interface onCapturePictureListener {
+        void onCapturePicture(byte[] picture);
     }
 
 }
