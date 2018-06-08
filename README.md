@@ -11,8 +11,10 @@ This app was built to rid the common man/woman/apache-helicopter/fluid-gender of
 - IU (Indiana University)
 - (many fucking more)
 
+Development-wise, this is a small-ish summer project for me to refresh on some Android concepts/practices and familiarize myself with new api's, development techniques/practices, retrofit and interacting with the camera. Basically a continued exploration of the Android ecosystem (fun!). The app is built around gestures (because I thought it would be cool), from adjusting different properties to revealing layouts. Moreover, it will be published to the playstore when it's ready.
+
 #### How it works
-This uses [foaas](foaas.com) as a backend to fetch the templates and generate a unique fuck quote (FQ) based on the users input.
+This uses [foaas](https://www.foaas.com) as a backend to fetch the templates and generate a unique fuck quote (FQ) based on the users input.
 
 #### How to use it
 1. Choose a Fuck
