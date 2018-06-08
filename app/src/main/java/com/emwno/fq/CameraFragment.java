@@ -11,48 +11,38 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.fotoapparat.Fotoapparat;
-import io.fotoapparat.configuration.CameraConfiguration;
-import io.fotoapparat.selector.LensPositionSelectorsKt;
-import io.fotoapparat.selector.ResolutionSelectorsKt;
-import io.fotoapparat.view.CameraView;
+import com.otaliastudios.cameraview.CameraView;
+import com.otaliastudios.cameraview.Facing;
 
 /**
  * Created on 22 May 2018.
  */
 public class CameraFragment extends Fragment implements GestureListener {
 
-    private int mLensPosition = 0;
     private float mZoomLevel = 0;
     private float mTouchStartPointY = -1;
 
-    private Fotoapparat mCamera;
+    private CameraView mCameraView;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_camera, container, false);
 
-        CameraView cameraView = rootView.findViewById(R.id.camera_view);
-        mCamera = Fotoapparat.with(getContext())
-                .lensPosition(LensPositionSelectorsKt.back())
-                .photoResolution(ResolutionSelectorsKt.highestResolution())
-                .into(cameraView).build();
+        mCameraView = rootView.findViewById(R.id.camera_view);
 
         GestureDetector gestureDetector = new GestureDetector(getContext(), this);
-        rootView.setOnTouchListener((v, event) -> !gestureDetector.onTouchEvent(event));
+        mCameraView.setOnTouchListener((v, event) -> !gestureDetector.onTouchEvent(event));
 
         return rootView;
     }
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        if (mLensPosition == 0) {
-            mCamera.switchTo(LensPositionSelectorsKt.front(), CameraConfiguration.standard());
-            mLensPosition++;
+        if (mCameraView.getFacing() == Facing.BACK) {
+            mCameraView.setFacing(Facing.FRONT);
         } else {
-            mCamera.switchTo(LensPositionSelectorsKt.back(), CameraConfiguration.standard());
-            mLensPosition--;
+            mCameraView.setFacing(Facing.BACK);
         }
         return true;
     }
@@ -79,25 +69,25 @@ public class CameraFragment extends Fragment implements GestureListener {
             mZoomLevel += scale;
             if (mZoomLevel > 1) mZoomLevel = 1;
             Log.e("king", "up  " + mZoomLevel);
-            mCamera.setZoom(mZoomLevel);
+            mCameraView.setZoom(mZoomLevel);
         } else {
             mZoomLevel -= scale;
             if (mZoomLevel < 0) mZoomLevel = 0;
             Log.e("king", "down  " + mZoomLevel);
-            mCamera.setZoom(mZoomLevel);
+            mCameraView.setZoom(mZoomLevel);
         }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mCamera.start();
+        mCameraView.start();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mCamera.stop();
+        mCameraView.stop();
     }
 
 }
