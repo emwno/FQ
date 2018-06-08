@@ -145,8 +145,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     public void onFuckSelected(Fuck fuck) {
         for (int i = 0; i < fuck.getFields().size(); i++) {
-            Field field = fuck.getFields().get(i);
-            fuck.getFields().get(i).setData("~" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "|");
+            fuck.getFields().get(i).setData("~|");
         }
 
         if (mBottomSheet != null) {
@@ -180,12 +179,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             public void onResponse(Call<FQ> call, Response<FQ> response) {
 
                 String title = response.body().getMessage();
-                title = title.replaceAll("~", " <u>");
-                title = title.replaceAll("\\|", "</u>");
+                title = title.replace("~|", " <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>");
 
                 String subtitle = response.body().getSubtitle();
-                subtitle = subtitle.replaceAll("~", "<u>");
-                subtitle = subtitle.replaceAll("\\|", "</u>");
+                subtitle = subtitle.replace("~|", " <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>");
 
                 mQuoteTitle.setText(Util.fromHtml(title));
                 mQuoteSubtitle.setText(Util.fromHtml(subtitle));
@@ -211,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             if (!blank.isEmpty())
                 mFuck.getFields().get(i).setData(fuckBlanks.get(i));
             else
-                mFuck.getFields().get(i).setData("~&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|");
+                mFuck.getFields().get(i).setData("~|");
         }
 
         fetchFQ(mFuck);
