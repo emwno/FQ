@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     private ViewPager mPager;
     private ViewPagerAdapter mAdapter;
-    private RelativeLayout mQuoteLayout;
+    private LinearLayout mQuoteLayout;
     private FQBottomSheetFragment mBottomSheet;
 
     private View mBottomSheetSwipeView;
