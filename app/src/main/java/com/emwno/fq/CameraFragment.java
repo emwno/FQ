@@ -26,11 +26,11 @@ public class CameraFragment extends Fragment implements GestureListener {
 
     private CameraView mCameraView;
 
-    private onCapturePictureListener mListener;
+    private OnCapturePictureListener mListener;
 
     @Override
     public void onAttach(Context activity) {
-        mListener = (onCapturePictureListener) activity;
+        mListener = (OnCapturePictureListener) activity;
         super.onAttach(activity);
     }
 
@@ -114,8 +114,7 @@ public class CameraFragment extends Fragment implements GestureListener {
         mCameraView.stop();
     }
 
-
-    public interface onCapturePictureListener {
+    public interface OnCapturePictureListener {
         void onCapturePicture(byte[] picture);
     }
 
