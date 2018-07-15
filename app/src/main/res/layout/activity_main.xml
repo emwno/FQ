@@ -1,60 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/relativeLayout"
+    android:id="@+id/containerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="56dp"
-        android:src="@drawable/quote_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/fqLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent"
+        app:cardCornerRadius="5dp">
 
-        <TextView
-            android:id="@+id/fqTitle"
+        <RelativeLayout
+            android:id="@+id/fqBackground"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:text="Punch drunk\nDumb struck\nPot luck\nHappy happy"
-            android:textSize="25sp" />
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient">
 
-        <TextView
-            android:id="@+id/fqSubtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:paddingBottom="32dp"
-            android:text="Wolf Alice"
-            android:textColor="@color/light_dark" />
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/fqIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:src="@drawable/quote_icon" />
 
-    <View
-        android:id="@+id/fqSwipeView"
+            <TextView
+                android:id="@+id/fqTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/fqSubtitle"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:text="Punch drunk\nDumb struck\nPot luck\nHappy happy"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/fqSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:paddingBottom="32dp"
+                android:text="Wolf Alice"
+                android:textColor="@color/light_dark" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fqList"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fqLayout"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:requiresFadingEdge="vertical" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
