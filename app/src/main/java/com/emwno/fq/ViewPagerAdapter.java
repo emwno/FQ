@@ -12,14 +12,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 0) return new FuckFragment();
-        else if (position == 1) return new QuoteFragment();
+        if (position == 0) return new QuoteFragment();
         else return new CameraFragment();
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
 }
