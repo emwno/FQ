@@ -9,6 +9,7 @@
         android:id="@+id/fqLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="5dp">
 
         <RelativeLayout
@@ -20,15 +21,25 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/fqIcon"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:src="@drawable/quote_icon" />
+
+            <TextView
+                android:id="@+id/fqMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fqIcon"
+                android:gravity="center"
+                android:padding="10dp" />
 
             <TextView
                 android:id="@+id/fqTitle"
@@ -40,7 +51,8 @@
                 android:layout_marginStart="32dp"
                 android:text="Punch drunk\nDumb struck\nPot luck\nHappy happy"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/fqSubtitle"
@@ -51,7 +63,8 @@
                 android:layout_marginStart="32dp"
                 android:paddingBottom="32dp"
                 android:text="Wolf Alice"
-                android:textColor="@color/light_dark" />
+                android:textColor="@color/light_dark"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

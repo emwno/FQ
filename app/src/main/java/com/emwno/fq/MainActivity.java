@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -104,6 +105,32 @@ public class MainActivity extends AppCompatActivity implements
         fetchData();
     }
 
+    public void handleLoad() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                TransitionSet set = new TransitionSet();
+                set.addTransition(new ChangeBounds())
+                        .addTransition(new Fade(Fade.IN));
+                TransitionManager.beginDelayedTransition(mContainerLayout, set);
+
+                RelativeLayout.LayoutParams paramsIcon = (RelativeLayout.LayoutParams) mQuoteIcon.getLayoutParams();
+                paramsIcon.removeRule(RelativeLayout.CENTER_IN_PARENT);
+                mQuoteIcon.setLayoutParams(paramsIcon);
+
+                mQuoteGradient = (AnimationDrawable) findViewById(R.id.fqBackground).getBackground();
+                mQuoteGradient.setEnterFadeDuration(3000);
+                mQuoteGradient.setExitFadeDuration(3000);
+                mQuoteGradient.start();
+
+                mPager.setVisibility(View.VISIBLE);
+                mQuoteTitle.setVisibility(View.VISIBLE);
+                mQuoteSubtitle.setVisibility(View.VISIBLE);
+            }
+        }, 2000);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -154,11 +181,27 @@ public class MainActivity extends AppCompatActivity implements
             public void onResponse(Call<List<Fuck>> call, Response<List<Fuck>> response) {
                 mQuoteListAdapter = new FuckAdapter(MainActivity.this, response.body());
                 mQuoteList.setAdapter(mQuoteListAdapter);
+                handleLoad();
             }
 
             @Override
             public void onFailure(Call<List<Fuck>> call, Throwable t) {
+                handleError();
+            }
+        });
+    }
 
+    private void handleError() {
+        TransitionManager.beginDelayedTransition(mContainerLayout);
+        TextView tv = findViewById(R.id.fqMessage);
+        tv.setText("Oh Noes!\nNo Internet Connection Available\nTap to retry");
+        tv.setVisibility(View.VISIBLE);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransitionManager.beginDelayedTransition(mContainerLayout);
+                tv.setVisibility(View.GONE);
+                fetchData();
             }
         });
     }
