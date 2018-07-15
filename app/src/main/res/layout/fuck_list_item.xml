@@ -4,24 +4,23 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginEnd="32dp"
-    android:layout_marginStart="36dp"
-    android:layout_marginTop="4dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <TextView
-        android:id="@+id/fuckItemTitle"
+        android:id="@+id/fqItemTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/dark"
-        android:textSize="18sp" />
+        android:textColor="@color/text_light"
+        android:textSize="16sp" />
 
-    <View
-        android:id="@+id/divider"
+    <TextView
+        android:id="@+id/fqItemFields"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/light_dark"
-        app:layout_constraintTop_toBottomOf="@+id/fuckItemTitle" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_dark"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/fqItemTitle" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.emwno.fq;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.emwno.fq.network.Fuck;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +19,10 @@ public class FuckAdapter extends RecyclerView.Adapter<FuckViewHolder> {
     private Context mContext;
     private List<Fuck> mList;
 
-    public FuckAdapter(Context context) {
+    public FuckAdapter(Context context, List<Fuck> list) {
         mContext = context;
-        mList = new ArrayList<>();
+        mList = list;
+        setHasStableIds(true);
     }
 
     public List<Fuck> getList() {
@@ -34,19 +35,20 @@ public class FuckAdapter extends RecyclerView.Adapter<FuckViewHolder> {
     }
 
     @Override
-    public FuckViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @NonNull
+    @Override
+    public FuckViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.fuck_list_item, viewGroup, false);
         return new FuckViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(FuckViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FuckViewHolder holder, int position) {
         holder.bind(mList.get(position));
-    }
-
-    public void setItems(List<Fuck> list) {
-        mList.addAll(list);
-        notifyDataSetChanged();
     }
 
 }
