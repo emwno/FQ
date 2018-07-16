@@ -70,6 +70,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void handleBlanks(List<String> fuckBlanks) {
+        boolean allBlank = true;
         for (int i = 0; i < getCurrentFuck().getFields().size(); i++) {
             String blank = fuckBlanks.get(i);
 
@@ -78,13 +79,15 @@ public class MainPresenter implements MainContract.Presenter {
                 return;
             }
 
-            if (!blank.isEmpty())
+            if (!blank.isEmpty()) {
+                allBlank = false;
                 getCurrentFuck().getFields().get(i).setData(fuckBlanks.get(i));
-            else
+            } else {
                 getCurrentFuck().getFields().get(i).setData("~|");
-
-            getFQ(mFuck);
+            }
         }
+
+        if (!allBlank) getFQ(getCurrentFuck());
     }
 
     @Override
