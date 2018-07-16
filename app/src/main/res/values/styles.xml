@@ -11,6 +11,7 @@
     </style>
 
     <style name="DialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:colorBackground">@color/black</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowSoftInputMode">adjustUnspecified</item>
     </style>

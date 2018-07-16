@@ -24,11 +24,11 @@ public class FuckViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Fuck fuck) {
         mTitle.setText(fuck.getName());
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (Field field : fuck.getFields()) {
-            s += field.getName().toUpperCase();
-            s += "  ";
+            s.append(field.getName().toUpperCase());
+            s.append("  ");
         }
-        mFields.setText(s.trim());
+        mFields.setText(s.toString().trim());
     }
 }
