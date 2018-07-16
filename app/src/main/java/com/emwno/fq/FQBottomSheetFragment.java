@@ -17,6 +17,8 @@ import com.emwno.fq.network.Fuck;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+
 /**
  * Created on 25 May 2018.
  */
@@ -28,7 +30,9 @@ public class FQBottomSheetFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bottom_sheet, container, false);
-        Fuck fuck = getArguments().getParcelable("fuck");
+
+        String fuckName = getArguments().getString("fuck");
+        Fuck fuck = Realm.getDefaultInstance().where(Fuck.class).equalTo("name", fuckName).findFirst();
 
         mEditTextList = new ArrayList<>();
 

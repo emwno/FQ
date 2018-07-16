@@ -297,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements
         mBottomSheet = new FQBottomSheetFragment();
 
         Bundle b = new Bundle();
-        b.putParcelable("fuck", mQuoteListAdapter.getList().get(position));
+        b.putString("fuck", mQuoteListAdapter.getList().get(position).getName());
         mBottomSheet.setArguments(b);
 
         mPresenter.getFQMessage(mQuoteListAdapter.getList().get(position));

@@ -1,36 +1,18 @@
 package com.emwno.fq.network;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.List;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created on 25 May 2018.
  */
-public class Fuck implements Parcelable {
+public class Fuck extends RealmObject {
 
-    public static final Creator<Fuck> CREATOR = new Creator<Fuck>() {
-        @Override
-        public Fuck createFromParcel(Parcel in) {
-            return new Fuck(in);
-        }
-
-        @Override
-        public Fuck[] newArray(int size) {
-            return new Fuck[size];
-        }
-    };
-
+    @PrimaryKey
     private String name;
     private String url;
-    private List<Field> fields;
-
-    protected Fuck(Parcel in) {
-        name = in.readString();
-        url = in.readString();
-        fields = in.createTypedArrayList(Field.CREATOR);
-    }
+    private RealmList<Field> fields;
 
     public String getName() {
         return name;
@@ -48,23 +30,12 @@ public class Fuck implements Parcelable {
         this.url = url;
     }
 
-    public List<Field> getFields() {
+    public RealmList<Field> getFields() {
         return fields;
     }
 
-    public void setFields(List<Field> fields) {
+    public void setFields(RealmList<Field> fields) {
         this.fields = fields;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(url);
-        dest.writeTypedList(fields);
-    }
 }
