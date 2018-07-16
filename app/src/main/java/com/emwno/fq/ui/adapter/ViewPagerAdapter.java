@@ -1,12 +1,15 @@
-package com.emwno.fq;
+package com.emwno.fq.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.emwno.fq.ui.CameraFragment;
+import com.emwno.fq.ui.QuoteFragment;
+
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    ViewPagerAdapter(FragmentManager fm) {
+    public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

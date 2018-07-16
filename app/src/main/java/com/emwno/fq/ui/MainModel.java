@@ -1,11 +1,11 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
 import android.util.Log;
 
-import com.emwno.fq.network.FQ;
+import com.emwno.fq.model.FQ;
+import com.emwno.fq.model.Fuck;
 import com.emwno.fq.network.FQFactory;
 import com.emwno.fq.network.FQService;
-import com.emwno.fq.network.Fuck;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

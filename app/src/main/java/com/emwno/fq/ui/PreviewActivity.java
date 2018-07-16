@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.emwno.fq.R;
+import com.emwno.fq.util.Util;
 
 /**
  * Created on 09 Jun 2018.

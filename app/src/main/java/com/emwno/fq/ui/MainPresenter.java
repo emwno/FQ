@@ -1,7 +1,7 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
-import com.emwno.fq.network.Field;
-import com.emwno.fq.network.Fuck;
+import com.emwno.fq.model.Field;
+import com.emwno.fq.model.Fuck;
 
 import java.util.List;
 

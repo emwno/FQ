@@ -1,5 +1,8 @@
 package com.emwno.fq.network;
 
+import com.emwno.fq.model.FQ;
+import com.emwno.fq.model.Fuck;
+
 import java.util.List;
 
 import io.reactivex.Observable;

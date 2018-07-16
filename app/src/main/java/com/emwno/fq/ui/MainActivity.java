@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -15,9 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emwno.fq.MainPresenter.State;
-import com.emwno.fq.network.FQ;
-import com.emwno.fq.network.Fuck;
+import com.emwno.fq.R;
+import com.emwno.fq.model.FQ;
+import com.emwno.fq.model.Fuck;
+import com.emwno.fq.ui.MainPresenter.State;
+import com.emwno.fq.ui.adapter.FuckAdapter;
+import com.emwno.fq.ui.adapter.ViewPagerAdapter;
+import com.emwno.fq.ui.listerner.GestureListener;
+import com.emwno.fq.ui.listerner.RecyclerItemClickListener;
 import com.emwno.fq.ui.transition.TextViewSize;
 import com.transitionseverywhere.ChangeBounds;
 import com.transitionseverywhere.ChangeText;

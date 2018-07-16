@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.util;
 
 import android.os.Build;
 import android.text.Html;

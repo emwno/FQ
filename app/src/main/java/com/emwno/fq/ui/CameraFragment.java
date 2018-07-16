@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.emwno.fq.R;
+import com.emwno.fq.ui.listerner.GestureListener;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;

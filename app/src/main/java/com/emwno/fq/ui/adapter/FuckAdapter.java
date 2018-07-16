@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,7 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.emwno.fq.network.Fuck;
+import com.emwno.fq.R;
+import com.emwno.fq.model.Fuck;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +12,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.emwno.fq.network.Fuck;
+import com.emwno.fq.R;
+import com.emwno.fq.model.Fuck;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.emwno.fq.network;
+package com.emwno.fq.model;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

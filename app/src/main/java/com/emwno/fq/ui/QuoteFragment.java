@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.emwno.fq.R;
+import com.emwno.fq.ui.listerner.GestureListener;
 
 /**
  * Created on 22 May 2018.

@@ -1,8 +1,8 @@
-package com.emwno.fq;
+package com.emwno.fq.ui;
 
-import com.emwno.fq.MainPresenter.State;
-import com.emwno.fq.network.FQ;
-import com.emwno.fq.network.Fuck;
+import com.emwno.fq.model.FQ;
+import com.emwno.fq.model.Fuck;
+import com.emwno.fq.ui.MainPresenter.State;
 
 import java.util.List;
 

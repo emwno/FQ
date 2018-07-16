@@ -1,4 +1,4 @@
-package com.emwno.fq;
+package com.emwno.fq.ui.listerner;
 
 import android.view.GestureDetector;
 import android.view.MotionEvent;

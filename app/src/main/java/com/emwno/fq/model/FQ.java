@@ -1,4 +1,4 @@
-package com.emwno.fq.network;
+package com.emwno.fq.model;
 
 /**
  * Created on 24 May 2018.
