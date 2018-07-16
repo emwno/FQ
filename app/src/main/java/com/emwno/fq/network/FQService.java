@@ -2,7 +2,7 @@ package com.emwno.fq.network;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -12,9 +12,9 @@ import retrofit2.http.Path;
 public interface FQService {
 
     @GET("{url}")
-    Call<FQ> getFuck(@Path(value = "url", encoded = true) String url);
+    Observable<FQ> getFuck(@Path(value = "url", encoded = true) String url);
 
     @GET("operations")
-    Call<List<Fuck>> getOperations();
+    Observable<List<Fuck>> getOperations();
 
 }
