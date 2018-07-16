@@ -8,8 +8,10 @@ import com.emwno.fq.network.FQService;
 import com.emwno.fq.network.Fuck;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.realm.Realm;
 
 /**
  * Created on 16 Jul 2018.
@@ -24,17 +26,26 @@ public class MainModel implements MainContract.Model {
 
     @Override
     public Observable<List<Fuck>> getFucksWeb() {
-        return mService.getOperations();
+        return mService.getOperations().doOnNext(this::saveFucksToCache);
     }
 
     @Override
-    public Observable<List<Fuck>> getFucksCache() {
-        return null;
+    public Observable<List<Fuck>> getFucksLocal() {
+        List<Fuck> results = Realm.getDefaultInstance().where(Fuck.class).findAll();
+        return Observable.just(results).delay(1, TimeUnit.SECONDS);
     }
 
     @Override
     public Observable<FQ> getFQ(String url) {
         Log.e("king", url);
         return mService.getFuck(url);
+    }
+
+    private void saveFucksToCache(List<Fuck> fuckList) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(fuckList);
+        realm.commitTransaction();
+        realm.close();
     }
 }

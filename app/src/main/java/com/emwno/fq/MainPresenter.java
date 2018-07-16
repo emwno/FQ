@@ -5,6 +5,7 @@ import com.emwno.fq.network.Fuck;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -29,7 +30,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void getFucks() {
-        Disposable disposable = mModel.getFucksWeb()
+        Disposable disposable = Observable.concat(mModel.getFucksLocal(), mModel.getFucksWeb())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                         fuckList -> mView.onFucksReceived(fuckList),

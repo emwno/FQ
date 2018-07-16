@@ -26,7 +26,7 @@ public interface MainContract {
     interface Model {
         Observable<List<Fuck>> getFucksWeb();
 
-        Observable<List<Fuck>> getFucksCache();
+        Observable<List<Fuck>> getFucksLocal();
 
         Observable<FQ> getFQ(String url);
     }
