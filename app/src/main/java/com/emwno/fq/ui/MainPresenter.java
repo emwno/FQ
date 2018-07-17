@@ -22,6 +22,7 @@ public class MainPresenter implements MainContract.Presenter {
     private Fuck mFuck;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private State mCurrentState = State.EXPANDED;
+    private boolean mReceived;
 
     public MainPresenter(MainContract.View view) {
         mView = view;
@@ -33,7 +34,10 @@ public class MainPresenter implements MainContract.Presenter {
         Disposable disposable = Observable.concat(mModel.getFucksLocal(), mModel.getFucksWeb())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        fuckList -> mView.onFucksReceived(fuckList),
+                        fuckList -> {
+                            if (!mReceived) mView.onFucksReceived(fuckList);
+                            mReceived = true;
+                        },
                         throwable -> mView.onErrorFucks());
 
         mCompositeDisposable.add(disposable);
