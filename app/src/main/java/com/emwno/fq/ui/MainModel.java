@@ -32,7 +32,7 @@ public class MainModel implements MainContract.Model {
     @Override
     public Observable<List<Fuck>> getFucksLocal() {
         List<Fuck> results = Realm.getDefaultInstance().where(Fuck.class).findAll();
-        return Observable.just(results).delay(1, TimeUnit.SECONDS);
+        return Observable.just(Realm.getDefaultInstance().copyFromRealm(results)).delay(1, TimeUnit.SECONDS);
     }
 
     @Override
