@@ -47,12 +47,12 @@ public class QuoteFragment extends Fragment implements GestureListener {
             mTouchStartPointY = e1.getRawY();
         }
 
-        if (mTouchStartPointY - e2.getRawY() > 100) {
+        if (distanceY > distanceX && mTouchStartPointY - e2.getRawY() > 100) {
             mTouchStartPointY = e2.getRawY();
-            mListener.onAdjustFQSize(0, Math.abs(distanceY) / 50);
-        } else if (e2.getRawY() - mTouchStartPointY > 100) {
+            mListener.onAdjustFQSize(0, Math.abs(distanceY) / 100);
+        } else if (distanceY > distanceX && e2.getRawY() - mTouchStartPointY > 100) {
             mTouchStartPointY = e2.getRawY();
-            mListener.onAdjustFQSize(1, Math.abs(distanceY) / 50);
+            mListener.onAdjustFQSize(1, Math.abs(distanceY) / 100);
         }
 
         return true;
