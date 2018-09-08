@@ -59,22 +59,6 @@ public class QuoteFragment extends Fragment implements GestureListener {
     }
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        boolean result = false;
-        float diffY = e1.getY() - e2.getY();
-        if (Math.abs(diffY) > 100 && Math.abs(velocityY) > 100) {
-            if (diffY > 0) {
-                mListener.onShowFucks();
-            } else {
-                mListener.onHideFucks();
-            }
-            result = true;
-        }
-
-        return result;
-    }
-
-    @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
         mListener.onShowBlanks();
         return true;
@@ -87,10 +71,6 @@ public class QuoteFragment extends Fragment implements GestureListener {
     }
 
     public interface OnActionListener {
-        void onShowFucks();
-
-        void onHideFucks();
-
         void onShowBlanks();
 
         void onAdjustFQSize(int direction, float scale);

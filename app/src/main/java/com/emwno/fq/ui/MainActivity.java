@@ -1,5 +1,6 @@
 package com.emwno.fq.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
@@ -9,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -52,12 +55,15 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mQuoteTitle;
     private TextView mQuoteSubtitle;
     private ImageView mQuoteIcon;
+    private View mQuoteFucks;
 
     private ViewPagerAdapter mPagerAdapter;
     private FuckAdapter mQuoteListAdapter;
+    private GestureDetector mDetector;
 
     private MainPresenter mPresenter;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements
         mQuoteTitle = findViewById(R.id.fqTitle);
         mQuoteSubtitle = findViewById(R.id.fqSubtitle);
         mQuoteIcon = findViewById(R.id.fqIcon);
+        mQuoteFucks = findViewById(R.id.fqFucks);
 
         mPresenter = new MainPresenter(this);
 
@@ -87,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements
         mQuoteList.setLayoutManager(layoutManager);
         mQuoteList.setAdapter(mQuoteListAdapter);
         mQuoteList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+
+        mDetector = new GestureDetector(this, this);
+        mQuoteFucks.setOnTouchListener((v, event) -> !mDetector.onTouchEvent(event));
 
         mLayoutCompressedHeight = (int) (150 * getResources().getDisplayMetrics().density);
         mLayoutCompressedMargin = (int) (8 * getResources().getDisplayMetrics().density);
@@ -140,7 +150,22 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onShowFucks() {
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        boolean result = false;
+        float diffY = e1.getY() - e2.getY();
+        if (Math.abs(diffY) > 100 && Math.abs(velocityY) > 100) {
+            if (diffY > 0) {
+                onShowFucks();
+            } else {
+                onHideFucks();
+            }
+            result = true;
+        }
+
+        return result;
+    }
+
+    private void onShowFucks() {
         mPresenter.changeState();
         TransitionManager.beginDelayedTransition(mContainerLayout, mTransitionSet);
 
@@ -160,8 +185,7 @@ public class MainActivity extends AppCompatActivity implements
         mQuoteTitle.setTextSize(18);
     }
 
-    @Override
-    public void onHideFucks() {
+    private void onHideFucks() {
         mPresenter.changeState();
         TransitionManager.beginDelayedTransition(mContainerLayout, mTransitionSet);
 
@@ -201,9 +225,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onAdjustFQSize(int direction, float scale) {
-        /* Can't differentiate b/w scroll and fling,
-         *  gotta find a better way to adjust size.
-
         if (direction == 0) {
             mCurrentTitleSize += 1 + scale;
         } else {
@@ -216,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements
             mCurrentTitleSize = 25;
         }
 
-        mQuoteTitle.setTextSize(mCurrentTitleSize);*/
+        mQuoteTitle.setTextSize(mCurrentTitleSize);
     }
 
     @Override
