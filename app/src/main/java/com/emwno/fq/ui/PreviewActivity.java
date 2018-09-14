@@ -49,6 +49,7 @@ public class PreviewActivity extends AppCompatActivity {
 
         byte[] image = getIntent().getByteArrayExtra("image");
         int orientation = getIntent().getIntExtra("imageOrientation", 0);
+        boolean camFront = getIntent().getBooleanExtra("camFront", false);
         String fqt = getIntent().getStringExtra("fqTitle");
         String fqst = getIntent().getStringExtra("fqSubTitle");
         int textStyle = getIntent().getIntExtra("textStyle", 0);
@@ -68,11 +69,13 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
         Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-        if (rotation != 0) {
-            Matrix matrix = new Matrix();
-            matrix.setRotate(rotation);
+        Matrix matrix = new Matrix();
+
+        if (camFront) matrix.postScale(-1.0f, 1.0f);
+        if (rotation != 0) matrix.setRotate(rotation);
+        if (camFront || rotation != 0)
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        }
+
 
         Glide.with(this).load(bitmap).listener(new RequestListener<Drawable>() {
             @Override

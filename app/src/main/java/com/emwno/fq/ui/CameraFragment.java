@@ -50,7 +50,7 @@ public class CameraFragment extends Fragment implements GestureListener {
         mCameraView.addCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(byte[] picture) {
-                mListener.onCapturePicture(picture);
+                mListener.onCapturePicture(picture, mCameraView.getFacing() == Facing.FRONT);
             }
         });
 
@@ -117,7 +117,7 @@ public class CameraFragment extends Fragment implements GestureListener {
     }
 
     public interface OnCapturePictureListener {
-        void onCapturePicture(byte[] picture);
+        void onCapturePicture(byte[] picture, boolean camFront);
     }
 
 }

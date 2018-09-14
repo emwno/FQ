@@ -264,10 +264,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onCapturePicture(byte[] picture) {
+    public void onCapturePicture(byte[] picture, boolean camFront) {
         Intent intent = new Intent(getBaseContext(), PreviewActivity.class);
         intent.putExtra("image", picture);
         intent.putExtra("imageOrientation", mDeviceOrientation.getOrientation());
+        intent.putExtra("camFront", camFront);
         intent.putExtra("fqTitle", mQuoteTitle.getText().toString());
         intent.putExtra("fqSubTitle", mQuoteSubtitle.getText().toString());
         intent.putExtra("textSize", mCurrentTitleSize);
