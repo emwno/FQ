@@ -29,6 +29,7 @@ import com.emwno.fq.util.DeviceOrientation;
 import com.emwno.fq.util.Util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -47,7 +48,6 @@ public class PreviewActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        byte[] image = getIntent().getByteArrayExtra("image");
         int orientation = getIntent().getIntExtra("imageOrientation", 0);
         boolean camFront = getIntent().getBooleanExtra("camFront", false);
         String fqt = getIntent().getStringExtra("fqTitle");
@@ -68,30 +68,37 @@ public class PreviewActivity extends AppCompatActivity {
             rotation = 180;
         }
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
         Matrix matrix = new Matrix();
-
         if (camFront) matrix.postScale(-1.0f, 1.0f);
         if (rotation != 0) matrix.setRotate(rotation);
-        if (camFront || rotation != 0)
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        try {
+            FileInputStream fis = openFileInput("cam.jpg");
+            Bitmap bitmap = BitmapFactory.decodeStream(fis);
+            fis.close();
+
+            if (camFront || rotation != 0)
+                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
 
-        Glide.with(this).load(bitmap).listener(new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                Toast.makeText(PreviewActivity.this, "Unable to share image. Please try again or report this via Google Play", Toast.LENGTH_LONG).show();
-                onBackPressed();
-                return false;
-            }
+            Glide.with(this).load(bitmap).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    Toast.makeText(PreviewActivity.this, "Unable to share image. Please try again or report this via Google Play", Toast.LENGTH_LONG).show();
+//                onBackPressed();
+                    return false;
+                }
 
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                generateFQ();
-                shareFQ();
-                return false;
-            }
-        }).into(view);
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    generateFQ();
+                    shareFQ();
+                    return false;
+                }
+            }).into(view);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         mQuoteTitle.setTextSize(textSize);
 

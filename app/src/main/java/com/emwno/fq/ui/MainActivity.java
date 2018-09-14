@@ -1,7 +1,10 @@
 package com.emwno.fq.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
@@ -36,6 +39,8 @@ import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.TransitionManager;
 import com.transitionseverywhere.TransitionSet;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -265,8 +270,17 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onCapturePicture(byte[] picture, boolean camFront) {
-        Intent intent = new Intent(getBaseContext(), PreviewActivity.class);
-        intent.putExtra("image", picture);
+
+        try {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
+            FileOutputStream fos = openFileOutput("cam.jpg", Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Intent intent = new Intent(this, PreviewActivity.class);
         intent.putExtra("imageOrientation", mDeviceOrientation.getOrientation());
         intent.putExtra("camFront", camFront);
         intent.putExtra("fqTitle", mQuoteTitle.getText().toString());
