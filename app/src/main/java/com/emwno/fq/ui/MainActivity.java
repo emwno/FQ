@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import com.emwno.fq.ui.adapter.ViewPagerAdapter;
 import com.emwno.fq.ui.listerner.GestureListener;
 import com.emwno.fq.ui.listerner.RecyclerItemClickListener;
 import com.emwno.fq.ui.transition.TextViewSize;
+import com.emwno.fq.util.DeviceOrientation;
 import com.transitionseverywhere.ChangeBounds;
 import com.transitionseverywhere.ChangeText;
 import com.transitionseverywhere.Fade;
@@ -38,15 +41,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements
         MainContract.View, GestureListener, QuoteFragment.OnActionListener, CameraFragment.OnCapturePictureListener, FQBottomSheetFragment.OnBlanksFilledListener, RecyclerItemClickListener.OnItemClickListener {
 
+    DeviceOrientation mDeviceOrientation;
+    SensorManager mSensorManager;
+    Sensor mAccelerometer;
+    Sensor mMagnetometer;
     private int mLayoutCompressedHeight;
     private int mLayoutCompressedMargin;
-
     private int mQuoteStyle = 0;
     private float mCurrentTitleSize = 25f;
-
     private TransitionSet mTransitionSet;
     private AnimationDrawable mQuoteGradient;
-
     private RelativeLayout mContainerLayout;
     private FQBottomSheetFragment mBottomSheet;
     private ViewPager mPager;
@@ -56,11 +60,9 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mQuoteSubtitle;
     private ImageView mQuoteIcon;
     private View mQuoteFucks;
-
     private ViewPagerAdapter mPagerAdapter;
     private FuckAdapter mQuoteListAdapter;
     private GestureDetector mDetector;
-
     private MainPresenter mPresenter;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -68,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDeviceOrientation = new DeviceOrientation();
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         mContainerLayout = findViewById(R.id.containerLayout);
         mPager = findViewById(R.id.viewPager);
@@ -134,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onResume();
         if (mQuoteGradient != null && !mQuoteGradient.isRunning())
             mQuoteGradient.start();
+        mSensorManager.registerListener(mDeviceOrientation.getEventListener(), mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mDeviceOrientation.getEventListener(), mMagnetometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -141,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onPause();
         if (mQuoteGradient != null && mQuoteGradient.isRunning())
             mQuoteGradient.stop();
+        mSensorManager.unregisterListener(mDeviceOrientation.getEventListener());
     }
 
     @Override
@@ -257,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onCapturePicture(byte[] picture) {
         Intent intent = new Intent(getBaseContext(), PreviewActivity.class);
         intent.putExtra("image", picture);
+        intent.putExtra("imageOrientation", mDeviceOrientation.getOrientation());
         intent.putExtra("fqTitle", mQuoteTitle.getText().toString());
         intent.putExtra("fqSubTitle", mQuoteSubtitle.getText().toString());
         intent.putExtra("textSize", mCurrentTitleSize);
@@ -303,13 +314,10 @@ public class MainActivity extends AppCompatActivity implements
         TextView tv = findViewById(R.id.fqMessage);
         tv.setText("Oh Noes!\nNo Internet Connection Available\nTap to retry");
         tv.setVisibility(View.VISIBLE);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransitionManager.beginDelayedTransition(mContainerLayout);
-                tv.setVisibility(View.GONE);
-                mPresenter.getFucks();
-            }
+        tv.setOnClickListener(v -> {
+            TransitionManager.beginDelayedTransition(mContainerLayout);
+            tv.setVisibility(View.GONE);
+            mPresenter.getFucks();
         });
     }
 
