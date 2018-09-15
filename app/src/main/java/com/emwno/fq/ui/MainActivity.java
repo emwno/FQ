@@ -10,11 +10,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,15 +28,20 @@ import com.emwno.fq.ui.listerner.GestureListener;
 import com.emwno.fq.ui.listerner.RecyclerItemClickListener;
 import com.emwno.fq.ui.transition.TextViewSize;
 import com.emwno.fq.util.DeviceOrientation;
-import com.transitionseverywhere.ChangeBounds;
-import com.transitionseverywhere.ChangeText;
-import com.transitionseverywhere.Fade;
-import com.transitionseverywhere.TransitionManager;
-import com.transitionseverywhere.TransitionSet;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Fade;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
+import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity implements
         MainContract.View, GestureListener, QuoteFragment.OnActionListener, CameraFragment.OnCapturePictureListener, FQBottomSheetFragment.OnBlanksFilledListener, RecyclerItemClickListener.OnItemClickListener {
@@ -312,8 +312,6 @@ public class MainActivity extends AppCompatActivity implements
         String subtitle = fq.getSubtitle();
         subtitle = subtitle.replace("~|", " _______");
 
-        TransitionManager.beginDelayedTransition(mContainerLayout,
-                new ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN));
         mQuoteTitle.setText(title.trim());
         mQuoteSubtitle.setText(subtitle);
     }

@@ -4,35 +4,30 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.emwno.fq.R;
 import com.emwno.fq.util.DeviceOrientation;
 import com.emwno.fq.util.Util;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 /**
  * Created on 09 Jun 2018.
@@ -69,44 +64,31 @@ public class PreviewActivity extends AppCompatActivity {
             rotation = 180;
         }
 
-        Matrix matrix = new Matrix();
-
         if (camFront)
             if (Math.abs(rotation) == 90) view.setScaleY(-1);
             else view.setScaleX(-1);
 
-        if (rotation != 0) matrix.setRotate(rotation);
 
-        try {
-            FileInputStream fis = openFileInput("cam.jpg");
-            Bitmap bitmap = BitmapFactory.decodeStream(fis);
-            fis.close();
+        File newFile = new File(getFilesDir(), "cam.jpg");
+        Picasso.get()
+                .load(newFile)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .rotate(rotation)
+                .into(view, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Handler h = new Handler();
+                        h.postDelayed(() -> {
+                            generateFQ();
+                            shareFQ();
+                        }, 200);
+                    }
 
-            if (camFront || rotation != 0)
-                bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
-
-            Glide.with(this).load(bitmap).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    Toast.makeText(PreviewActivity.this, "Unable to share image. Please try again or report this via Google Play", Toast.LENGTH_LONG).show();
-//                onBackPressed();
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(() -> {
-                        generateFQ();
-                        shareFQ();
-                    }, 100);
-                    return false;
-                }
-            }).into(view);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    @Override
+                    public void onError(Exception e) {
+                        Toast.makeText(PreviewActivity.this, "Unable to share image. Please try again or report this via Google Play", Toast.LENGTH_LONG).show();
+                    }
+                });
 
         mQuoteTitle.setTextSize(textSize);
 
@@ -119,10 +101,9 @@ public class PreviewActivity extends AppCompatActivity {
 
     private void generateFQ() {
         View v = getWindow().getDecorView().getRootView();
-        v.setDrawingCacheEnabled(true);
-        v.buildDrawingCache(true);
-        Bitmap bitmap = Bitmap.createBitmap(v.getDrawingCache());
-        v.setDrawingCacheEnabled(false);
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        v.draw(canvas);
 
         try {
             FileOutputStream fos = openFileOutput("image.jpg", Context.MODE_PRIVATE);

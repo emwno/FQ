@@ -1,12 +1,13 @@
 package com.emwno.fq.ui.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.emwno.fq.R;
 import com.emwno.fq.model.Field;
 import com.emwno.fq.model.Fuck;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created on 25 May 2018.

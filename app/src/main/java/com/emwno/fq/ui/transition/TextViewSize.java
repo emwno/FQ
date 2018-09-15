@@ -3,14 +3,15 @@ package com.emwno.fq.ui.transition;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
+import android.util.FloatProperty;
 import android.util.Property;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionValues;
-import com.transitionseverywhere.utils.FloatProperty;
+import androidx.transition.Transition;
+import androidx.transition.TransitionValues;
+
 
 /**
  * Created on 15 July 2018.
@@ -20,7 +21,7 @@ public class TextViewSize extends Transition {
     /**
      * Property is like a helper that contain setter and getter in one place
      */
-    private static final Property<TextView, Float> PROGRESS_PROPERTY = new FloatProperty<TextView>() {
+    private static final Property<TextView, Float> PROGRESS_PROPERTY = new FloatProperty<TextView>("textSize") {
 
         @Override
         public void setValue(TextView textView, float value) {

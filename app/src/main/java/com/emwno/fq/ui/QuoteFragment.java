@@ -3,8 +3,6 @@ package com.emwno.fq.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.emwno.fq.R;
 import com.emwno.fq.ui.listerner.GestureListener;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created on 22 May 2018.
