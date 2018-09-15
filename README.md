@@ -3,6 +3,9 @@
 >_The ridding of your trouble-est of the most troublesome everyday troubles is almost upon you!_
 
 This app was built to rid the common man/woman/apache-helicopter/fluid-gender of the everyday trouble of _(politely)_ asking a special someone (or thing if you're into that) to **fuck**:
+
+<img align="right" src="screenshots/quote.png" width="22%">
+
 - off
 - you
 - it
