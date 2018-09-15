@@ -69,7 +69,11 @@ public class PreviewActivity extends AppCompatActivity {
         }
 
         Matrix matrix = new Matrix();
-        if (camFront) matrix.postScale(-1.0f, 1.0f);
+
+        if (camFront)
+            if (Math.abs(rotation) == 90) view.setScaleY(-1);
+            else view.setScaleX(-1);
+
         if (rotation != 0) matrix.setRotate(rotation);
 
         try {
