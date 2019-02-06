@@ -46,16 +46,15 @@ import androidx.viewpager.widget.ViewPager;
 public class MainActivity extends AppCompatActivity implements
         MainContract.View, GestureListener, QuoteFragment.OnActionListener, CameraFragment.OnCapturePictureListener, FQBottomSheetFragment.OnBlanksFilledListener, RecyclerItemClickListener.OnItemClickListener {
 
-    DeviceOrientation mDeviceOrientation;
-    SensorManager mSensorManager;
-    Sensor mAccelerometer;
-    Sensor mMagnetometer;
     private int mLayoutCompressedHeight;
     private int mLayoutCompressedMargin;
+
     private int mQuoteStyle = 0;
     private float mCurrentTitleSize = 25f;
+
     private TransitionSet mTransitionSet;
     private AnimationDrawable mQuoteGradient;
+
     private RelativeLayout mContainerLayout;
     private FQBottomSheetFragment mBottomSheet;
     private ViewPager mPager;
@@ -65,9 +64,16 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mQuoteSubtitle;
     private ImageView mQuoteIcon;
     private View mQuoteFucks;
+
+    private DeviceOrientation mDeviceOrientation;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private Sensor mMagnetometer;
+
     private ViewPagerAdapter mPagerAdapter;
     private FuckAdapter mQuoteListAdapter;
     private GestureDetector mDetector;
+
     private MainPresenter mPresenter;
 
     @SuppressLint("ClickableViewAccessibility")

@@ -15,6 +15,7 @@ import com.emwno.fq.ui.listerner.GestureListener;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
+import com.otaliastudios.cameraview.PictureResult;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -50,8 +51,9 @@ public class CameraFragment extends Fragment implements GestureListener {
         // For testing
         mCameraView.addCameraListener(new CameraListener() {
             @Override
-            public void onPictureTaken(byte[] picture) {
-                mListener.onCapturePicture(picture, mCameraView.getFacing() == Facing.FRONT);
+            public void onPictureTaken(@NonNull PictureResult result) {
+                super.onPictureTaken(result);
+                mListener.onCapturePicture(result.getData(), mCameraView.getFacing() == Facing.FRONT);
             }
         });
 
@@ -60,7 +62,7 @@ public class CameraFragment extends Fragment implements GestureListener {
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        mCameraView.captureSnapshot();
+        mCameraView.takePictureSnapshot();
         return true;
     }
 
@@ -108,13 +110,13 @@ public class CameraFragment extends Fragment implements GestureListener {
     @Override
     public void onStart() {
         super.onStart();
-        mCameraView.start();
+        mCameraView.open();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mCameraView.stop();
+        mCameraView.close();
     }
 
     public interface OnCapturePictureListener {
