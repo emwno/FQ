@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.emwno.fq.R;
 import com.emwno.fq.ui.listerner.GestureListener;
+import com.otaliastudios.cameraview.Audio;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
@@ -44,6 +45,8 @@ public class CameraFragment extends Fragment implements GestureListener {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_camera, container, false);
 
         mCameraView = rootView.findViewById(R.id.camera_view);
+
+        mCameraView.setAudio(Audio.OFF);
 
         GestureDetector gestureDetector = new GestureDetector(getContext(), this);
         mCameraView.setOnTouchListener((v, event) -> !gestureDetector.onTouchEvent(event));
