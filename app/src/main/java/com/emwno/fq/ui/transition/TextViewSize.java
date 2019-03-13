@@ -2,13 +2,13 @@ package com.emwno.fq.ui.transition;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.support.annotation.NonNull;
 import android.util.FloatProperty;
 import android.util.Property;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.transition.Transition;
 import androidx.transition.TransitionValues;
 
